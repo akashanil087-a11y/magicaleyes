@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:www.figma.com)"
+      "WebFetch(domain:www.figma.com)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npm uninstall:*)",
+      "WebFetch(domain:www.kbcconnects.com)",
+      "WebFetch(domain:web.archive.org)",
+      "Bash(ffmpeg -version)",
+      "Bash(npx tsc *)"
     ]
   }
 }
