@@ -79,16 +79,6 @@ export default function Portfolio() {
 
   return (
     <div className="bg-black text-white">
-      {/* ====== Top header ====== */}
-      <header className="fixed top-0 inset-x-0 z-40 px-6 md:px-10 py-5 md:py-6 flex items-center justify-center pointer-events-none">
-        <div className="text-center pointer-events-auto">
-          <p className="font-serif italic text-amber-200/80 text-base md:text-lg leading-none mb-1">
-            I.
-          </p>
-          <p className="text-[9px] md:text-[10px] tracking-[0.5em]">WORKS</p>
-        </div>
-      </header>
-
       {/* ====== Desktop: horizontal-on-vertical scroll ====== */}
       <section
         ref={sectionRef}

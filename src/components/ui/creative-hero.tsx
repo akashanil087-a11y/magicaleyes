@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import gsap from "gsap";
@@ -7,31 +7,11 @@ import { MagicalEyesEffect } from "@/components/ui/text-effect";
 import { GlowCard } from "@/components/ui/spotlight-card";
 import { RevealCardContainer } from "@/components/ui/animated-profile-card";
 
-const time24Fmt = new Intl.DateTimeFormat("en-GB", {
-  timeZone: "Asia/Kolkata",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  hour12: false,
-});
-const time12Fmt = new Intl.DateTimeFormat("en-US", {
-  timeZone: "Asia/Kolkata",
-  hour: "numeric",
-  minute: "2-digit",
-  hour12: true,
-});
-
 /* ─────────── Hero — CSS-only animated, no WebGL ─────────── */
 export default function CreativeHero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
-  const [now, setNow] = useState(() => new Date());
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   // Magnetic CTA effect (GSAP only on the button — proven safe)
   useEffect(() => {
@@ -77,8 +57,9 @@ export default function CreativeHero() {
         aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover z-0"
       />
-      {/* Subtle dark overlay for text legibility */}
-      <div className="absolute inset-0 bg-black/35 z-0" />
+      {/* Soft gradient overlay — darker only behind text/cards, lets the
+          centre and top of the video read cleanly. */}
+      <div className="absolute inset-0 z-0 bg-linear-to-b from-black/40 via-black/10 to-black/55 pointer-events-none" />
 
       <motion.div
         initial={{ filter: "blur(20px)", scale: 1.02, opacity: 0 }}
@@ -88,7 +69,7 @@ export default function CreativeHero() {
       >
         {/* ── Left side ── */}
         <div className="flex-1 min-w-0 flex flex-col justify-between pb-8 md:pb-8 w-full gap-8 md:gap-0">
-          {/* Live clock pill (replaces the brand pill) */}
+          {/* Photographer credit pill (replaces the live clock) */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -100,7 +81,7 @@ export default function CreativeHero() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
             </span>
             <span className="font-mono text-[11px] md:text-[13px] font-medium text-white tracking-wider whitespace-nowrap">
-              Local time: {time24Fmt.format(now)} ({time12Fmt.format(now)})
+              Frame by Akash Anil
             </span>
           </motion.div>
 

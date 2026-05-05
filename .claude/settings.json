@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(winget install --id Gyan.FFmpeg --silent --accept-package-agreements --accept-source-agreements --disable-interactivity)",
+      "PowerShell($tmp = \"src\\\\assets\\\\pj\\\\hiyuki-compressed.mp4\"; \"Compressed size: \" + \\([math]::Round\\(\\(Get-Item $tmp\\).Length/1MB, 2\\)\\) + \" MB\")"
+    ]
+  }
+}

@@ -1,25 +1,17 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ReactLenis from "lenis/react";
 import { motion } from "framer-motion";
-import { useAuth } from "@/hooks/useAuth";
 import MusicPlayer from "@/components/ui/music-player";
 import CreativeHero from "@/components/ui/creative-hero";
 import { MagneticText } from "@/components/ui/morphing-cursor";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
-import { ImageSwiper } from "@/components/ui/image-swiper";
+import BrandMarquee from "@/components/ui/brand-marquee";
 import { TextScramble } from "@/components/ui/text-scramble";
 import { Typewriter } from "@/components/ui/typewriter";
 import bgMusic from "@/components/gallery/kontraa-no-sleep-hiphop-music-473847.mp3";
 import ownerPhoto from "@/assets/owner/akaa.png";
 import heroBg from "@/assets/pj/pj1.jpg";
-import pj2 from "@/assets/pj/pj2.jpg";
-import pj3 from "@/assets/pj/pj3.jpg";
-import pj4 from "@/assets/pj/pj4.jpg";
-import pj5 from "@/assets/pj/pj5.jpg";
-import pj6 from "@/assets/pj/pj6.jpg";
-import pj7 from "@/assets/pj/pj7.jpg";
 import pj8 from "@/assets/pj/pj8.jpg";
 import pj17 from "@/assets/pj/pj17.jpg";
 import pj18 from "@/assets/pj/pj18.jpg";
@@ -27,7 +19,6 @@ import pj19 from "@/assets/pj/pj19.jpg";
 import pj20 from "@/assets/pj/pj20.jpeg";
 import pj21 from "@/assets/pj/pj21.jpeg";
 
-const galleryImages = [pj2, pj3, pj4, pj5, pj6, pj7];
 const sliderImages = [pj8, pj17, pj18, pj19, pj20, pj21];
 
 /* ── Animation Variants ── */
@@ -55,55 +46,12 @@ const t = { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] as const };
 const vp = { once: true, margin: "-80px" };
 
 export default function Home() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  // Responsive sizing for mobile ImageSwiper card.
-  // ImageSwiper's outer <section> width = cardWidth + 32 (internal buffer for
-  // shadow / 3D stack), so we subtract 32 here plus a 24px outer gutter to
-  // guarantee the swiper never busts the viewport on any phone.
-  const [swiperSize, setSwiperSize] = useState({ w: 320, h: 448 });
-  useEffect(() => {
-    const compute = () => {
-      const vw = window.innerWidth;
-      const w = Math.min(Math.max(vw - 56, 260), 460);
-      const h = Math.round(w * 1.4);
-      setSwiperSize({ w, h });
-    };
-    compute();
-    window.addEventListener("resize", compute);
-    window.addEventListener("orientationchange", compute);
-    return () => {
-      window.removeEventListener("resize", compute);
-      window.removeEventListener("orientationchange", compute);
-    };
-  }, []);
-
-  const handleAuthClick = () => {
-    if (user) {
-      logout();
-    } else {
-      navigate("/login");
-    }
-  };
-
   return (
     <>
     <ReactLenis root>
       <article className="relative">
         {/* ══════ 1. HERO — 3D Creative Hero ══════ */}
-        <div className="relative">
-          {/* Auth button — top-right on desktop, hidden on mobile (use navbar menu instead) */}
-          <div className="absolute top-6 right-6 md:top-8 md:right-8 z-30 hidden md:block">
-            <button
-              onClick={handleAuthClick}
-              className="border border-white/40 hover:border-white hover:bg-white hover:text-gray-900 text-white text-[12px] tracking-[0.2em] uppercase px-6 py-2.5 transition-all duration-500 cursor-pointer"
-            >
-              {user ? "Logout" : "Login"}
-            </button>
-          </div>
-          <CreativeHero />
-        </div>
+        <CreativeHero />
 
         {/* ══════ 2. INTRO ══════ */}
         <section className="relative bg-[#f0ece6] py-12 md:py-16 px-8 md:px-16">
@@ -187,33 +135,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══════ 5. GALLERY ══════ */}
-        <section className="relative bg-[#f0ece6] pt-6 pb-12 md:py-20 px-3 md:px-6">
-          {/* Desktop: horizontal accordion */}
-          <motion.div
-            className="hidden md:flex items-center gap-2 h-[80vh] w-full mx-auto"
-            initial="hidden" whileInView="visible" viewport={vp} variants={fadeUp} transition={t}
-          >
-            {galleryImages.map((src, i) => (
-              <div key={i} className="relative group grow transition-all w-56 rounded-xl overflow-hidden h-full duration-500 hover:w-full">
-                <img className="h-full w-full object-cover object-center" src={src} alt="" loading="lazy" />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Mobile: stack-card swiper */}
-          <div className="md:hidden w-full max-w-full overflow-hidden flex flex-col items-center justify-center pt-4">
-            <ImageSwiper
-              images={galleryImages.join(",")}
-              cardWidth={swiperSize.w}
-              cardHeight={swiperSize.h}
-            />
-            <p className="mt-6 text-[11px] tracking-[0.3em] uppercase text-[#8b7d6b]/70">
-              Swipe to explore
-            </p>
-          </div>
-        </section>
+        {/* ══════ 4.5 BRAND MARQUEE — black band ══════ */}
+        <BrandMarquee />
 
         {/* ══════ 6. CTA ══════ */}
         <section className="relative min-h-screen w-full overflow-hidden">

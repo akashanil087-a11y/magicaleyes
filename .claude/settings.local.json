@@ -8,7 +8,8 @@
       "WebFetch(domain:www.kbcconnects.com)",
       "WebFetch(domain:web.archive.org)",
       "Bash(ffmpeg -version)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "PowerShell($paths = @\\(\"$env:LOCALAPPDATA\\\\Microsoft\\\\WinGet\\\\Links\\\\ffmpeg.exe\", \"C:\\\\ffmpeg\\\\bin\\\\ffmpeg.exe\", \"$env:ProgramFiles\\\\ffmpeg\\\\bin\\\\ffmpeg.exe\"\\); foreach \\($p in $paths\\) { if \\(Test-Path $p\\) { Write-Output \"FOUND: $p\"; break } }; Get-Command winget -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source)"
     ]
   }
 }
