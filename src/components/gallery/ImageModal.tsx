@@ -1,15 +1,50 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 interface Props {
   open: boolean;
   setOpen: (v: boolean) => void;
-  /** Full list of images for the carousel. */
   images: string[];
-  /** Index of the image to start on. */
   initialIndex?: number;
+}
+
+const ACCENT = "text-green-400";
+const ACCENT_BORDER = "border-green-400/70";
+const year = new Date().getFullYear();
+
+function DiamondButton({
+  children,
+  onClick,
+  href,
+  ariaLabel,
+  className,
+}: {
+  children: React.ReactNode;
+  onClick?: () => void;
+  href?: string;
+  ariaLabel: string;
+  className?: string;
+}) {
+  const Cmp: React.ElementType = href ? "a" : "button";
+  return (
+    <Cmp
+      type={href ? undefined : "button"}
+      onClick={onClick}
+      href={href}
+      target={href ? "_blank" : undefined}
+      rel={href ? "noopener noreferrer" : undefined}
+      aria-label={ariaLabel}
+      className={cn(
+        `w-9 h-9 md:w-10 md:h-10 border ${ACCENT_BORDER} rotate-45 flex items-center justify-center transition-colors hover:bg-green-400/10 cursor-pointer`,
+        className
+      )}
+    >
+      <span className={cn("-rotate-45 inline-flex", ACCENT)}>{children}</span>
+    </Cmp>
+  );
 }
 
 export default function ImageModal({
@@ -21,7 +56,6 @@ export default function ImageModal({
   const [index, setIndex] = useState(initialIndex);
   const [direction, setDirection] = useState(1);
 
-  // Sync the active index whenever the modal opens with a new starting frame.
   useEffect(() => {
     if (open) setIndex(initialIndex);
   }, [open, initialIndex]);
@@ -39,7 +73,6 @@ export default function ImageModal({
   const next = useCallback(() => goTo(index + 1), [goTo, index]);
   const prev = useCallback(() => goTo(index - 1), [goTo, index]);
 
-  // Keyboard nav while the modal is open.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -53,71 +86,111 @@ export default function ImageModal({
 
   if (!images.length) return null;
   const current = images[index];
+  const upcoming = images[(index + 1) % images.length];
+  const previous = images[(index - 1 + images.length) % images.length];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-none! w-screen h-screen p-0 bg-black/95 border-0 rounded-none flex items-center justify-center overflow-hidden"
+        className="max-w-none! w-screen h-screen p-0 bg-black border-0 rounded-none flex items-center justify-center overflow-hidden"
       >
+        {/* Faint peeking neighbours — left & right edges */}
+        <img
+          src={previous}
+          alt=""
+          aria-hidden="true"
+          className="absolute left-0 top-1/2 -translate-y-1/2 h-[55vh] w-[6vw] object-cover opacity-25 blur-[2px]"
+        />
+        <img
+          src={upcoming}
+          alt=""
+          aria-hidden="true"
+          className="absolute right-0 top-1/2 -translate-y-1/2 h-[55vh] w-[6vw] object-cover opacity-25 blur-[2px]"
+        />
+
+        {/* Top header — brand mark (left) + diamond social icons (right) */}
+        <div className="fixed top-6 inset-x-0 z-40 px-6 md:px-10 flex items-start justify-between pointer-events-none">
+          <p className="text-[10px] md:text-[11px] tracking-[0.4em] leading-relaxed text-white/85 pointer-events-auto">
+            MAGICAL
+            <br />
+            EYES
+          </p>
+          <div className="flex gap-2 md:gap-3 pointer-events-auto">
+            <DiamondButton ariaLabel="Facebook" href="https://facebook.com">
+              <FaFacebookF className="text-[10px] md:text-[11px]" />
+            </DiamondButton>
+            <DiamondButton ariaLabel="Twitter" href="https://twitter.com">
+              <FaTwitter className="text-[10px] md:text-[11px]" />
+            </DiamondButton>
+            <DiamondButton
+              ariaLabel="Instagram"
+              href="https://www.instagram.com/magical_eyes004/"
+            >
+              <FaInstagram className="text-[10px] md:text-[11px]" />
+            </DiamondButton>
+          </div>
+        </div>
+
         {/* Image stage */}
-        <div className="relative w-full h-full flex items-center justify-center px-6 md:px-20 py-12">
+        <div className="relative w-full h-full flex items-center justify-center px-[10vw] py-20">
           <AnimatePresence mode="wait" custom={direction}>
-            <motion.img
+            <motion.div
               key={current}
-              src={current}
-              alt={`Frame ${index + 1}`}
               custom={direction}
               initial={{ opacity: 0, x: direction * 40, scale: 0.98 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: -direction * 40, scale: 0.98 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-full max-h-full object-contain shadow-2xl shadow-black/60"
-            />
+              className="relative max-w-full max-h-full"
+            >
+              <img
+                src={current}
+                alt={`Frame ${index + 1}`}
+                className="max-w-full max-h-[78vh] object-contain shadow-2xl shadow-black/60"
+              />
+              {/* Floating next-image thumbnail (top-right of main image) */}
+              <button
+                type="button"
+                onClick={next}
+                aria-label="Next frame preview"
+                className="absolute top-1/3 -right-6 md:-right-12 w-32 h-20 md:w-40 md:h-24 overflow-hidden ring-1 ring-white/20 shadow-2xl shadow-black/60 cursor-pointer hover:scale-105 transition-transform"
+              >
+                <img
+                  src={upcoming}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </button>
+            </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Close (top-right) */}
-        <button
-          type="button"
-          onClick={() => setOpen(false)}
-          aria-label="Close"
-          className="fixed top-6 right-6 z-50 w-10 h-10 rounded-full border border-white/20 text-white/80 hover:text-white hover:border-white/60 flex items-center justify-center cursor-pointer transition-colors"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
+        {/* Left — diamond hamburger (close) */}
+        <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 pointer-events-auto">
+          <DiamondButton ariaLabel="Close" onClick={() => setOpen(false)}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 6h18M3 12h18M3 18h18" />
+            </svg>
+          </DiamondButton>
+        </div>
 
-        {/* Side arrows */}
-        <button
-          type="button"
-          onClick={prev}
-          aria-label="Previous"
-          className="fixed left-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full border border-white/15 text-amber-200/80 hover:text-amber-200 hover:border-amber-200/60 flex items-center justify-center cursor-pointer transition-colors"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
+        {/* Right — long arrow + horizontal rule */}
         <button
           type="button"
           onClick={next}
           aria-label="Next"
-          className="fixed right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full border border-white/15 text-amber-200/80 hover:text-amber-200 hover:border-amber-200/60 flex items-center justify-center cursor-pointer transition-colors"
+          className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex items-center gap-2 cursor-pointer group"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 6l6 6-6 6" />
+          <span className="hidden md:block w-20 h-px bg-green-400/40 group-hover:bg-green-400 transition-colors" />
+          <svg width="20" height="14" viewBox="0 0 30 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={cn(ACCENT, "transition-transform group-hover:translate-x-1")}>
+            <path d="M0 7 L28 7 M22 1 L29 7 L22 13" />
           </svg>
         </button>
 
-        {/* Bottom controls — dots + counter */}
-        <div className="fixed bottom-6 inset-x-0 z-50 px-6 md:px-10 flex items-center justify-between pointer-events-none">
-          <span className="text-[10px] tracking-[0.4em] text-white/40 pointer-events-auto">
-            {String(index + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
-          </span>
-
-          <div className="flex items-center gap-2 pointer-events-auto">
+        {/* Bottom row — dots indicator centred between the prev/next horizontal lines */}
+        <div className="fixed inset-x-0 bottom-24 md:bottom-28 z-40 flex items-center justify-center gap-2 pointer-events-none">
+          <div className="flex items-center gap-3 md:gap-4 pointer-events-auto">
             {images.map((_, i) => (
               <button
                 key={i}
@@ -125,21 +198,48 @@ export default function ImageModal({
                 onClick={() => goTo(i)}
                 aria-label={`Go to frame ${i + 1}`}
                 className={cn(
-                  "h-1.5 rounded-full transition-all duration-300 cursor-pointer",
+                  "rounded-full transition-all duration-300 cursor-pointer",
                   i === index
-                    ? "w-6 bg-amber-300"
-                    : "w-1.5 bg-white/30 hover:bg-white/60"
+                    ? "w-2 h-2 bg-green-400"
+                    : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
                 )}
               />
             ))}
           </div>
+        </div>
 
-          <span
-            className="text-[10px] tracking-[0.4em] text-white/40 pointer-events-auto"
-            aria-hidden="true"
-          >
-            {index + 1}/{images.length}
-          </span>
+        {/* Bottom bar — copyright (left) · TWEET | SHARE (centre) · counter (right) */}
+        <div className="fixed bottom-6 inset-x-0 z-40 px-6 md:px-10 flex items-end justify-between text-[10px] md:text-[11px] tracking-[0.3em] uppercase pointer-events-none">
+          <p className="text-white/55 pointer-events-auto">
+            {year} © Magical Eyes
+          </p>
+
+          <div className="flex items-center gap-4 text-white/75 pointer-events-auto">
+            <a
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-white transition-colors"
+            >
+              <FaTwitter className={ACCENT} />
+              Tweet
+            </a>
+            <span className="text-white/25">|</span>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-white transition-colors"
+            >
+              <FaFacebookF className={ACCENT} />
+              Share
+            </a>
+          </div>
+
+          <p className="text-white/85 font-mono pointer-events-auto">
+            <span className="text-white">{index + 1}</span>
+            <span className="text-white/40">/{images.length}</span>
+          </p>
         </div>
       </DialogContent>
     </Dialog>

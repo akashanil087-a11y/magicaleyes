@@ -66,7 +66,7 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 inset-x-0 z-50 text-white/90 transition-[background-color,border-color,backdrop-filter] duration-300 ${
         solid
-          ? "bg-[#2a1810]/95 backdrop-blur-md border-b border-white/5"
+          ? "bg-[#1a1a1a]/95 backdrop-blur-md border-b border-white/5"
           : "bg-transparent border-b border-transparent"
       }`}
     >

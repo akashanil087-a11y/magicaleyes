@@ -54,15 +54,15 @@ export default function Home() {
         <CreativeHero />
 
         {/* ══════ 2. INTRO ══════ */}
-        <section className="relative bg-[#f0ece6] py-12 md:py-16 px-8 md:px-16">
+        <section className="relative bg-[#1a1a1a] py-12 md:py-16 px-8 md:px-16">
           <div className="max-w-7xl mx-auto w-full">
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20"
               initial="hidden" whileInView="visible" viewport={vp} variants={stagger}
             >
               <motion.div variants={fadeLeft} transition={t}>
-                <p className="text-[11px] tracking-[0.3em] uppercase text-[#8b7d6b] mb-3 italic">Let's Create Together</p>
-                <h2 className="text-3xl md:text-4xl font-light text-gray-900 leading-snug italic">
+                <p className="text-[11px] tracking-[0.3em] uppercase text-green-400 mb-3 italic">Let's Create Together</p>
+                <h2 className="text-3xl md:text-4xl font-light text-white leading-snug italic">
                   <TextScramble
                     text={"Capturing The Moments,\nCreating Your Memories"}
                     trigger="view"
@@ -71,7 +71,7 @@ export default function Home() {
                 </h2>
               </motion.div>
               <motion.div className="flex items-end" variants={fadeRight} transition={t}>
-                <p className="text-gray-500 text-sm leading-relaxed">
+                <p className="text-white/65 text-sm leading-relaxed">
                   Every frame is a story waiting to be told. We blend artistry with authenticity
                   to create photographs that transcend time — preserving the raw beauty of your
                   most cherished moments with cinematic elegance.
@@ -88,18 +88,18 @@ export default function Home() {
         </section>
 
         {/* ══════ 4. ABOUT ══════ */}
-        <section className="relative bg-[#f5f3f0] pt-12 pb-8 md:py-32 px-8 md:px-16">
+        <section className="relative bg-[#1a1a1a] pt-12 pb-8 md:py-32 px-8 md:px-16">
           <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <motion.div className="relative overflow-hidden rounded-2xl aspect-4/5" initial="hidden" whileInView="visible" viewport={vp} variants={scaleIn} transition={t}>
               <img src={ownerPhoto} alt="About" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-[filter] duration-1000 ease-in-out" />
             </motion.div>
 
             <motion.div initial="hidden" whileInView="visible" viewport={vp} variants={stagger}>
-              <motion.p variants={fadeUp} transition={t} className="text-[11px] tracking-[0.3em] uppercase text-[#8b7d6b] mb-3 italic">About Me</motion.p>
-              <motion.h2 variants={fadeUp} transition={t} className="text-3xl md:text-4xl font-light text-gray-900 mb-6 leading-snug italic">
+              <motion.p variants={fadeUp} transition={t} className="text-[11px] tracking-[0.3em] uppercase text-green-400 mb-3 italic">About Me</motion.p>
+              <motion.h2 variants={fadeUp} transition={t} className="text-3xl md:text-4xl font-light text-white mb-6 leading-snug italic">
                 <TextScramble text="Capturing stories that matter" trigger="view" speed={55} />
               </motion.h2>
-              <motion.p variants={fadeUp} transition={t} className="text-gray-500 leading-relaxed mb-4 min-h-[5.5em]">
+              <motion.p variants={fadeUp} transition={t} className="text-white/65 leading-relaxed mb-4 min-h-[5.5em]">
                 <Typewriter
                   words={[
                     "I'm a passionate photographer dedicated to capturing life's most beautiful moments. From weddings to nature landscapes, I strive to tell stories through my lens with authenticity and emotion.",
@@ -111,7 +111,7 @@ export default function Home() {
                   cursorChar="▍"
                 />
               </motion.p>
-              <motion.p variants={fadeUp} transition={t} className="text-gray-500 leading-relaxed mb-8 min-h-[3.5em]">
+              <motion.p variants={fadeUp} transition={t} className="text-white/65 leading-relaxed mb-8 min-h-[3.5em]">
                 <Typewriter
                   words={[
                     "With years of experience in cinematic photography, I bring a unique perspective to every project — blending artistry with modern techniques.",
@@ -124,7 +124,7 @@ export default function Home() {
                 />
               </motion.p>
               <motion.div variants={fadeUp} transition={t}>
-                <Link to="/about" className="inline-flex items-center gap-2 text-[13px] tracking-[0.15em] uppercase text-gray-800 border border-gray-300 px-6 py-2.5 hover:border-gray-500 transition-colors">
+                <Link to="/about" className="inline-flex items-center gap-2 text-[13px] tracking-[0.15em] uppercase text-white border border-white/20 px-6 py-2.5 hover:border-white/60 transition-colors">
                   More about me
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
@@ -152,7 +152,7 @@ export default function Home() {
                 <MagneticText text="HOVER ME" hoverText="LET'S TALK" className="text-white" />
               </motion.div>
               <motion.h2 variants={fadeUp} transition={t} className="text-4xl md:text-6xl lg:text-7xl font-light text-white italic leading-[1.15] mb-6">
-                Let's work <span className="text-[#c4956a]">together</span>
+                Let's work <span className="text-green-400">together</span>
               </motion.h2>
               <motion.p variants={fadeUp} transition={t} className="text-white/50 text-sm max-w-md mx-auto mb-10">
                 Get in touch and let's create something beautiful.

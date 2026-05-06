@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { LocationMap } from "@/components/ui/expand-map";
 
-const ACCENT = "#c4956a";
+const ACCENT = "#4ade80"; // green-400 — matches the site's dark/green theme
 
 /* ============================================================
    HERO
@@ -25,7 +25,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.05 }}
-          className="text-5xl md:text-6xl lg:text-7xl font-light text-gray-900 leading-[0.95] tracking-tight"
+          className="text-5xl md:text-6xl lg:text-7xl font-light text-white leading-[0.95] tracking-tight"
         >
           Let's start
           <br />
@@ -82,7 +82,7 @@ function ContactForm() {
         <UnderlineInput
           label="Email"
           type="email"
-          placeholder="you@company.com"
+          placeholder="you@name.com"
           value={data.email}
           onChange={handle("email")}
           required
@@ -92,15 +92,15 @@ function ContactForm() {
 
       {/* Company */}
       <UnderlineInput
-        label="Company (optional)"
-        placeholder="Company name"
+        label="Subject"
+        placeholder="What is this regarding?"
         value={data.company}
         onChange={handle("company")}
       />
 
       {/* Brief */}
       <div>
-        <label className="block text-[11px] tracking-[0.3em] uppercase text-gray-700 font-medium mb-3">
+        <label className="block text-[11px] tracking-[0.3em] uppercase text-white/85 font-medium mb-3">
           Brief
         </label>
         <textarea
@@ -109,7 +109,7 @@ function ContactForm() {
           required
           value={data.brief}
           onChange={handle("brief")}
-          className="w-full bg-transparent border-b border-gray-300 pb-3 text-[15px] text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-gray-700 transition-colors resize-y"
+          className="w-full bg-transparent border-b border-white/20 pb-3 text-[15px] text-white placeholder:text-white/45 focus:outline-none focus:border-green-400 transition-colors resize-y"
         />
       </div>
 
@@ -176,9 +176,9 @@ function InfoCard() {
 
         {/* AVAILABILITY */}
         <div>
-          <h3 className="text-xl font-bold tracking-wide mb-3">AVAILABILITY</h3>
+          <h3 className="text-xl font-bold tracking-wide mb-3">STATUS</h3>
           <p className="text-[15px] md:text-base text-white/85">
-            Currently taking on new engagements.
+            AVAILABLE
           </p>
         </div>
       </div>
@@ -196,7 +196,7 @@ interface UnderlineInputProps
 function UnderlineInput({ label, dot, ...props }: UnderlineInputProps) {
   return (
     <div>
-      <label className="flex items-center gap-2 text-[11px] tracking-[0.3em] uppercase text-gray-700 font-medium mb-3">
+      <label className="flex items-center gap-2 text-[11px] tracking-[0.3em] uppercase text-white/85 font-medium mb-3">
         <span>{label}</span>
         {dot && (
           <span
@@ -207,7 +207,7 @@ function UnderlineInput({ label, dot, ...props }: UnderlineInputProps) {
       </label>
       <input
         {...props}
-        className="w-full bg-transparent border-b border-gray-300 pb-3 text-[15px] text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-gray-700 transition-colors"
+        className="w-full bg-transparent border-b border-white/20 pb-3 text-[15px] text-white placeholder:text-white/45 focus:outline-none focus:border-green-400 transition-colors"
       />
     </div>
   );
@@ -218,7 +218,7 @@ function UnderlineInput({ label, dot, ...props }: UnderlineInputProps) {
    ============================================================ */
 export default function Contact() {
   return (
-    <div className="bg-[#f5f3f0] min-h-screen">
+    <div className="bg-[#1a1a1a] min-h-screen">
       <HeroSection />
 
       <section
@@ -246,7 +246,7 @@ export default function Contact() {
           >
             — Find us
           </p>
-          <h2 className="text-3xl md:text-4xl font-light text-gray-900 italic mb-10">
+          <h2 className="text-3xl md:text-4xl font-light text-white italic mb-10">
             Where we're based
           </h2>
           <LocationMap />

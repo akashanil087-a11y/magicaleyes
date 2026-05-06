@@ -64,7 +64,7 @@ export default function BrandMarquee({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden bg-[#f0ece6] text-black py-14 md:py-20 select-none",
+        "relative w-full overflow-hidden bg-[#1a1a1a] text-white py-14 md:py-20 select-none",
         className
       )}
     >
@@ -97,7 +97,7 @@ export default function BrandMarquee({
             {/* Interlocking double-oval monogram */}
             <span
               aria-hidden="true"
-              className="block w-20 h-12 md:w-28 md:h-16 lg:w-32 lg:h-20 text-black/40 shrink-0"
+              className="block w-20 h-12 md:w-28 md:h-16 lg:w-32 lg:h-20 text-green-400 shrink-0"
             >
               <MonogramME />
             </span>

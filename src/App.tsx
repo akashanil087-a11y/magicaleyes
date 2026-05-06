@@ -41,7 +41,7 @@ export default function App() {
         <Route
           path="*"
           element={
-            <div className="min-h-screen flex flex-col bg-[#f5f3f0]">
+            <div className="min-h-screen flex flex-col bg-[#1a1a1a]">
               <Navbar />
               <main className="flex-1">
                 <Routes>

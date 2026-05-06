@@ -185,7 +185,7 @@ export default function CreativeHero() {
                         initial={{ width: "0%" }}
                         animate={{ width: "60%" }}
                         transition={{ delay: 1.5, duration: 1.2, ease: "easeOut" }}
-                        className={`h-full ${accent ? "bg-black" : "bg-[#c4956a]"}`}
+                        className={`h-full ${accent ? "bg-black" : "bg-green-400"}`}
                       />
                     </div>
                   </div>
@@ -243,7 +243,7 @@ export default function CreativeHero() {
                 }}
               >
                 <RevealCardContainer
-                  accent="#c4956a"
+                  accent="#4ade80"
                   origin={{ x: 20, y: 20, r: 8 }}
                   expandTo="180%"
                   className="cursor-pointer"
@@ -253,7 +253,7 @@ export default function CreativeHero() {
                     </GlowCard>
                   }
                   overlay={
-                    <div className="h-full w-full rounded-2xl bg-[#c4956a]">
+                    <div className="h-full w-full rounded-2xl bg-green-400">
                       {renderBody(true)}
                     </div>
                   }

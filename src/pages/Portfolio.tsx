@@ -103,15 +103,15 @@ export default function Portfolio() {
             >
               {/* Intro card */}
               <article
-                className="shrink-0 w-[45vw] h-[72vh] border border-amber-200/15 bg-black/30 backdrop-blur-[2px] flex flex-col items-center justify-center text-center px-12"
+                className="shrink-0 w-[45vw] h-[72vh] border border-green-400/15 bg-black/30 backdrop-blur-[2px] flex flex-col items-center justify-center text-center px-12"
               >
-                <p className="text-[10px] tracking-[0.5em] text-amber-300/80 mb-5">
+                <p className="text-[10px] tracking-[0.5em] text-green-400/80 mb-5">
                   ARTWORK
                 </p>
                 <h2 className="text-5xl lg:text-6xl font-serif tracking-[0.2em] mb-7">
                   CHAPTER&nbsp;I
                 </h2>
-                <div className="w-8 h-px bg-amber-300/60 mb-9" />
+                <div className="w-8 h-px bg-green-400/60 mb-9" />
                 <div className="space-y-7">
                   <div>
                     <p className="text-[10px] tracking-[0.5em] text-white/50 mb-2">
