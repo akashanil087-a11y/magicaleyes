@@ -118,7 +118,7 @@ export default function About() {
               className="rounded-2xl bg-zinc-900/85 backdrop-blur-sm border border-white/5 p-6 flex items-center gap-5"
             >
               <Link
-                to="/portfolio"
+                to="/profile"
                 className="w-14 h-14 rounded-lg bg-black flex items-center justify-center shrink-0 overflow-hidden hover:bg-zinc-800 transition-colors"
                 aria-label="View portfolio"
               >
@@ -131,10 +131,10 @@ export default function About() {
               <div className="flex-1">
                 <p className="text-base font-bold tracking-wide">PORTFOLIO</p>
                 <Link
-                  to="/portfolio"
+                  to="/profile"
                   className="text-[13px] text-white/65 hover:text-white transition-colors"
                 >
-                  
+
                 </Link>
               </div>
               <svg

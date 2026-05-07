@@ -20,6 +20,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
+import Profile from "@/pages/Profile";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -73,6 +74,7 @@ export default function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </main>
