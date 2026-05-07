@@ -3,6 +3,7 @@ import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import akkuImg from "@/assets/pj/akku.jpg";
+import magicalEyesLogo from "@/assets/magical-eyes.jpg";
 
 /* ─── CountUp helper ─────────────────────────────────────────── */
 interface CountUpProps {
@@ -37,18 +38,18 @@ function CountUp({ to, duration = 1.6, suffix = "+", className }: CountUpProps) 
 }
 
 /* ─── Data ───────────────────────────────────────────────────── */
-const skills = ["Portrait photography", "Nature photography"];
+const skills = ["FRONT-END ENGINEER","SOFTWARE TESTER", "UI/UX DESIGNER", "PHOTOGRAPHER"];
 
 const journey = [
   {
     role: "FRONT-END ENGINEER & UI/UX DEVELOPER",
-    place: "NOMS Technologies — Kerala, India",
+    place: "NOMS Technologies — Pune, India",
     period: "Mar 2022 – Present (Lead Front-End Engineer)",
     accent: true,
   },
   {
     role: "SOFTWARE TESTER",
-    place: "NOMS Technologies — Kerala, India",
+    place: "NOMS Technologies — Pune, India",
     period: "Mar 2022 – Present (QA Engineer & Software Tester)",
   },
   {
@@ -83,7 +84,7 @@ export default function About() {
               ANIL
             </h1>
             <p className="mt-3 text-[11px] md:text-xs tracking-[0.35em] uppercase text-white/55 font-medium">
-              Photographer · Visual Storyteller
+              FRONT-END ENGINEER · UI/UX DESIGNER · PHOTOGRAPHER
             </p>
           </motion.div>
 
@@ -148,10 +149,14 @@ export default function About() {
             >
               <Link
                 to="/portfolio"
-                className="w-14 h-14 rounded-lg bg-black flex items-center justify-center shrink-0 hover:bg-zinc-800 transition-colors"
+                className="w-14 h-14 rounded-lg bg-black flex items-center justify-center shrink-0 overflow-hidden hover:bg-zinc-800 transition-colors"
                 aria-label="View portfolio"
               >
-                <span className="text-white text-xl font-black italic">Mē</span>
+                <img
+                  src={magicalEyesLogo}
+                  alt="Magical Eyes"
+                  className="w-full h-full object-cover"
+                />
               </Link>
               <div className="flex-1">
                 <p className="text-base font-bold tracking-wide">PORTFOLIO</p>
@@ -159,7 +164,7 @@ export default function About() {
                   to="/portfolio"
                   className="text-[13px] text-white/65 hover:text-white transition-colors"
                 >
-                  Click my world.
+                  
                 </Link>
               </div>
               <svg
@@ -212,7 +217,7 @@ export default function About() {
               <img
                 src={akkuImg}
                 alt="Akash Anil"
-                className="relative w-full aspect-[3/4] object-cover rounded-2xl grayscale contrast-110"
+                className="relative w-full aspect-[3/4] object-cover rounded-2xl grayscale hover:grayscale-0 contrast-110 transition-[filter] duration-1800 ease-in-out"
               />
 
               {/* Hand-drawn green arrow */}
@@ -299,24 +304,24 @@ export default function About() {
         >
           <a
             href="mailto:akashanil1131@gmail.com"
-            className="flex items-center gap-3 text-white/85 hover:text-white transition-colors"
+            className="group flex items-center gap-3 text-white/85 hover:text-white transition-colors"
           >
-            <span className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shrink-0">
+            <span className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-green-400 group-hover:text-black">
               <Mail size={14} />
             </span>
             akashanil1131@gmail.com
           </a>
           <a
             href="tel:+918943572124"
-            className="flex items-center gap-3 text-white/85 hover:text-white transition-colors"
+            className="group flex items-center gap-3 text-white/85 hover:text-white transition-colors"
           >
-            <span className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shrink-0">
+            <span className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-green-400 group-hover:text-black">
               <Phone size={14} />
             </span>
             +91 8943572124
           </a>
-          <span className="flex items-center gap-3 text-white/85">
-            <span className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shrink-0">
+          <span className="group flex items-center gap-3 text-white/85">
+            <span className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-green-400 group-hover:text-black">
               <MapPin size={14} />
             </span>
             Kerala, India

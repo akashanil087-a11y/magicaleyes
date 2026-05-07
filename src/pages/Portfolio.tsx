@@ -22,12 +22,20 @@ import pj17 from "@/assets/pj/pj17.jpg";
 import pj18 from "@/assets/pj/pj18.jpg";
 import pj20 from "@/assets/pj/pj20.jpeg";
 import pj21 from "@/assets/pj/pj21.jpeg";
+import pj22 from "@/assets/pj/pj22.jpg";
+import pj23 from "@/assets/pj/pj23.jpg";
+import pj24 from "@/assets/pj/pj24.jpg";
+import pj28 from "@/assets/pj/pj28.jpg";
+import pj29 from "@/assets/pj/pj29.jpg";
+import pj31 from "@/assets/pj/pj31.jpg";
+import akashhhh from "@/assets/pj/akashhhh.jpeg";
 
 const galleryImages: string[] = [
-  pj1, pj2, pj3, pj4, pj5, pj6,
-  pj7, pj8, pj9, pj10, pj11, pj12,
+  pj1, pj3, pj4, pj31, pj5,
+  pj7, pj8, pj22, pj28, pj9, pj10, pj11, pj12,
   pj13, pj14, pj15, pj16, pj17, pj18,
-  pj20, pj21,
+  pj20, pj23, pj21,
+  pj24, pj29 ,pj2,pj6 ,
 ];
 
 // Layout math for the horizontal-on-vertical scroll. The row contains
@@ -103,33 +111,47 @@ export default function Portfolio() {
             >
               {/* Intro card */}
               <article
-                className="shrink-0 w-[45vw] h-[72vh] border border-green-400/15 bg-black/30 backdrop-blur-[2px] flex flex-col items-center justify-center text-center px-12"
+                className="relative shrink-0 w-[45vw] h-[72vh] border border-green-400/15 bg-black/30 backdrop-blur-[2px] flex flex-col items-center justify-center text-center px-12 overflow-hidden"
               >
-                <p className="text-[10px] tracking-[0.5em] text-green-400/80 mb-5">
-                  ARTWORK
-                </p>
-                <h2 className="text-5xl lg:text-6xl font-serif tracking-[0.2em] mb-7">
-                  CHAPTER&nbsp;I
-                </h2>
-                <div className="w-8 h-px bg-green-400/60 mb-9" />
-                <div className="space-y-7">
-                  <div>
-                    <p className="text-[10px] tracking-[0.5em] text-white/50 mb-2">
-                      PHOTO
-                    </p>
-                    <p className="text-[13px] tracking-[0.3em]">AKASH ANIL</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] tracking-[0.5em] text-white/50 mb-2">
-                      STUDIO
-                    </p>
-                    <p className="text-[13px] tracking-[0.3em]">MAGICAL EYES</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] tracking-[0.5em] text-white/50 mb-2">
-                      YEAR
-                    </p>
-                    <p className="text-[13px] tracking-[0.3em]">{year}</p>
+                {/* Faded portrait backdrop */}
+                <img
+                  src={akashhhh}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-luminosity pointer-events-none"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-linear-to-b from-black/70 via-black/40 to-black/85 pointer-events-none"
+                />
+
+                <div className="relative z-10 flex flex-col items-center">
+                  <p className="text-[10px] tracking-[0.5em] text-green-400/80 mb-5">
+                    ARTWORK
+                  </p>
+                  <h2 className="text-5xl lg:text-6xl font-serif tracking-[0.2em] mb-7">
+                    PHOTOGRAPHY&nbsp;I
+                  </h2>
+                  <div className="w-8 h-px bg-green-400/60 mb-9" />
+                  <div className="space-y-7">
+                    <div>
+                      <p className="text-[10px] tracking-[0.5em] text-white/50 mb-2">
+                        PHOTOGRAPHER
+                      </p>
+                      <p className="text-[13px] tracking-[0.3em]">AKASH ANIL</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] tracking-[0.5em] text-white/50 mb-2">
+                        STUDIO
+                      </p>
+                      <p className="text-[13px] tracking-[0.3em]">MAGICAL EYES</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] tracking-[0.5em] text-white/50 mb-2">
+                        YEAR
+                      </p>
+                      <p className="text-[13px] tracking-[0.3em]">{year}</p>
+                    </div>
                   </div>
                 </div>
               </article>
@@ -163,7 +185,7 @@ export default function Portfolio() {
             ARTWORK
           </p>
           <h2 className="text-3xl font-serif tracking-[0.2em] mb-4">
-            CHAPTER&nbsp;I
+            PHOTOGRAPHY&nbsp;I
           </h2>
           <div className="w-8 h-px bg-amber-300/60 mx-auto" />
         </div>

@@ -13,8 +13,8 @@ const menuLinks = [
 
 const socials = [
   { label: "Instagram", href: "https://www.instagram.com/magical_eyes004/" },
-  { label: "Vimeo", href: "https://vimeo.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
+  { label: "WhatsApp", href: "https://wa.me/918943572124" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/akash-anil-136a01190/" },
 ];
 
 // Decorative bar widths matching the navbar style.
@@ -50,9 +50,29 @@ function ArrowIcon() {
 export default function Footer() {
   const location = useLocation();
   const [now, setNow] = useState(() => new Date());
+  const [liveLocation, setLiveLocation] = useState("DETECTING…");
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("https://ipapi.co/json/")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d) return;
+        const city = (d.city || "").toString().trim();
+        const cc = (d.country_code || "").toString().trim();
+        if (city && cc) setLiveLocation(`${city.toUpperCase()}, ${cc}`);
+        else setLiveLocation("KERALA, IN");
+      })
+      .catch(() => {
+        if (!cancelled) setLiveLocation("KERALA, IN");
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (HIDE_FOOTER_ROUTES.includes(location.pathname)) return null;
@@ -64,9 +84,9 @@ export default function Footer() {
           {/* Studio name */}
           <div className="md:col-span-6">
             <h2 className="text-3xl md:text-4xl font-semibold leading-[1.1] tracking-tight">
-              Photography <span className="text-white/40">+</span>
+              PHOTOGRAPHER <span className="text-green-400">+</span>
               <br />
-              Cinematic Storytelling
+              FRONT-END ENGINEER
             </h2>
           </div>
 
@@ -145,17 +165,17 @@ export default function Footer() {
           {/* Local time + location */}
           <div className="font-mono text-[11px] tracking-wider leading-tight text-white/85">
             <p className="uppercase">{istTime.format(now)}</p>
-            <p className="text-white/55 mt-1">KERALA, IN</p>
+            <p className="text-white/55 mt-1">{liveLocation}</p>
           </div>
 
           {/* Legal links */}
           <div className="flex items-center gap-6 text-[11px] tracking-[0.3em] uppercase text-white/55">
-            <a href="#" className="hover:text-white transition-colors">
-              Terms of use
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
+            <Link to="/terms" className="hover:text-white transition-colors">
+              Terms & Conditions
+            </Link>
+            <Link to="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
-            </a>
+            </Link>
           </div>
 
           {/* Decorative bars — staggered wave animation */}
@@ -181,7 +201,7 @@ export default function Footer() {
                   width: w,
                   animationDelay: `${i * 0.12}s`,
                 }}
-                className="h-2 rounded-sm bg-white/25"
+                className="h-2 rounded-sm bg-green-400/55"
               />
             ))}
           </div>

@@ -234,8 +234,8 @@ export default function MusicPlayer({ src }: { src: string }) {
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
             "w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300",
-            "bg-[#111111cc] backdrop-blur-md text-white hover:bg-[#111111ee] border border-white/15",
-            "shadow-lg shadow-black/30 hover:scale-105 active:scale-95"
+            "bg-[#111111cc] backdrop-blur-md text-white hover:bg-[#111111ee] border border-white/15 hover:border-green-400",
+            "shadow-lg shadow-black/30 hover:shadow-[0_0_22px_rgba(74,222,128,0.65),inset_0_0_14px_rgba(74,222,128,0.18)] hover:scale-105 active:scale-95"
           )}
         >
           {isPlaying ? (
@@ -243,7 +243,10 @@ export default function MusicPlayer({ src }: { src: string }) {
               {[1, 2, 3].map((i) => (
                 <motion.span
                   key={i}
-                  className="w-[3px] bg-white rounded-full"
+                  className={cn(
+                    "w-[3px] rounded-full",
+                    i === 2 ? "bg-white" : "bg-green-400"
+                  )}
                   animate={{ height: ["4px", "12px", "4px"] }}
                   transition={{
                     duration: 0.6,

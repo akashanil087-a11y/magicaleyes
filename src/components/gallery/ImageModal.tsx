@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
@@ -116,20 +116,6 @@ export default function ImageModal({
             <br />
             EYES
           </p>
-          <div className="flex gap-2 md:gap-3 pointer-events-auto">
-            <DiamondButton ariaLabel="Facebook" href="https://facebook.com">
-              <FaFacebookF className="text-[10px] md:text-[11px]" />
-            </DiamondButton>
-            <DiamondButton ariaLabel="Twitter" href="https://twitter.com">
-              <FaTwitter className="text-[10px] md:text-[11px]" />
-            </DiamondButton>
-            <DiamondButton
-              ariaLabel="Instagram"
-              href="https://www.instagram.com/magical_eyes004/"
-            >
-              <FaInstagram className="text-[10px] md:text-[11px]" />
-            </DiamondButton>
-          </div>
         </div>
 
         {/* Image stage */}
@@ -166,14 +152,43 @@ export default function ImageModal({
           </AnimatePresence>
         </div>
 
-        {/* Left — diamond hamburger (close) */}
-        <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 pointer-events-auto">
+        {/* Top-right — diamond close button (X icon, idle pulse + hover spin) */}
+        <motion.div
+          initial={{ opacity: 0, y: -12, scale: 0.85 }}
+          animate={{
+            opacity: 1,
+            y: [0, -3, 0],
+            scale: [1, 1.06, 1],
+            boxShadow: [
+              "0 0 0 rgba(74,222,128,0)",
+              "0 0 18px rgba(74,222,128,0.45)",
+              "0 0 0 rgba(74,222,128,0)",
+            ],
+          }}
+          transition={{
+            opacity: { duration: 0.4 },
+            y: { duration: 2.4, repeat: Infinity, ease: "easeInOut" },
+            scale: { duration: 2.4, repeat: Infinity, ease: "easeInOut" },
+            boxShadow: { duration: 2.4, repeat: Infinity, ease: "easeInOut" },
+          }}
+          className="fixed top-16 right-6 z-50 pointer-events-auto group rounded-md"
+        >
           <DiamondButton ariaLabel="Close" onClick={() => setOpen(false)}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 6h18M3 12h18M3 18h18" />
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-transform duration-300 ease-out group-hover:rotate-90 group-hover:scale-110"
+            >
+              <path d="M6 6 L18 18 M18 6 L6 18" />
             </svg>
           </DiamondButton>
-        </div>
+        </motion.div>
 
         {/* Right — long arrow + horizontal rule */}
         <button
@@ -189,7 +204,7 @@ export default function ImageModal({
         </button>
 
         {/* Bottom row — dots indicator centred between the prev/next horizontal lines */}
-        <div className="fixed inset-x-0 bottom-24 md:bottom-28 z-40 flex items-center justify-center gap-2 pointer-events-none">
+        <div className="fixed inset-x-0 bottom-24 md:bottom-28 z-40 hidden md:flex items-center justify-center gap-2 pointer-events-none">
           <div className="flex items-center gap-3 md:gap-4 pointer-events-auto">
             {images.map((_, i) => (
               <button

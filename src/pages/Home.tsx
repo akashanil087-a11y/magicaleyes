@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import ReactLenis from "lenis/react";
 import { motion } from "framer-motion";
-import MusicPlayer from "@/components/ui/music-player";
 import CreativeHero from "@/components/ui/creative-hero";
 import { MagneticText } from "@/components/ui/morphing-cursor";
 import { MagneticButton } from "@/components/ui/magnetic-button";
@@ -9,17 +8,17 @@ import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
 import BrandMarquee from "@/components/ui/brand-marquee";
 import { TextScramble } from "@/components/ui/text-scramble";
 import { Typewriter } from "@/components/ui/typewriter";
-import bgMusic from "@/components/gallery/kontraa-no-sleep-hiphop-music-473847.mp3";
 import ownerPhoto from "@/assets/owner/akaa.png";
 import heroBg from "@/assets/pj/pj1.jpg";
 import pj8 from "@/assets/pj/pj8.jpg";
 import pj17 from "@/assets/pj/pj17.jpg";
 import pj18 from "@/assets/pj/pj18.jpg";
 import pj19 from "@/assets/pj/pj19.jpg";
-import pj20 from "@/assets/pj/pj20.jpeg";
 import pj21 from "@/assets/pj/pj21.jpeg";
+import pj22 from "@/assets/pj/pj22.jpg";
+import pj31 from "@/assets/pj/pj31.jpg";
 
-const sliderImages = [pj8, pj17, pj18, pj19, pj20, pj21];
+const sliderImages = [pj8, pj21 , pj31, pj19, pj18, pj22, pj17,  ];
 
 /* ── Animation Variants ── */
 const fadeUp = {
@@ -124,7 +123,7 @@ export default function Home() {
                 />
               </motion.p>
               <motion.div variants={fadeUp} transition={t}>
-                <Link to="/about" className="inline-flex items-center gap-2 text-[13px] tracking-[0.15em] uppercase text-white border border-white/20 px-6 py-2.5 hover:border-white/60 transition-colors">
+                <Link to="/about" className="inline-flex items-center gap-2 text-[13px] tracking-[0.15em] uppercase text-white border border-white/20 px-6 py-2.5 transition-all duration-300 hover:border-green-400 hover:shadow-[0_0_20px_rgba(74,222,128,0.55),inset_0_0_14px_rgba(74,222,128,0.18)]">
                   More about me
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
@@ -167,8 +166,6 @@ export default function Home() {
         </section>
       </article>
     </ReactLenis>
-    {/* Music player (bottom-right) — outside Lenis for true fixed positioning */}
-    <MusicPlayer src={bgMusic} />
   </>
   );
 }

@@ -170,7 +170,7 @@ export default function CreativeHero() {
                 {item.type === "progress" ? (
                   <div className="flex justify-between items-end mt-2">
                     <h4
-                      className={`text-2xl sm:text-3xl font-bold tracking-tighter ${
+                      className={`font-display text-2xl sm:text-3xl font-light tracking-tighter ${
                         accent ? "text-black" : "text-white"
                       }`}
                     >
