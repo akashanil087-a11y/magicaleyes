@@ -33,7 +33,7 @@ export default function App() {
   if (loading) {
     return (
       <>
-        <LoadingScreen duration={2000} onComplete={() => setLoading(false)} />
+        <LoadingScreen duration={5000} onComplete={() => setLoading(false)} />
         {/* Hidden preloader — downloads the hero video in parallel with the
             loading screen so CreativeHero plays instantly when it mounts. */}
         <video

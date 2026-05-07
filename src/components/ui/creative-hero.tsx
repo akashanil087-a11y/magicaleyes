@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import gsap from "gsap";
-import heroVideo from "@/assets/pj/hiyuki-wuthering-waves-ultimate-moewalls-com.mp4";
+import heroVideo from "@/assets/pj/hero-compressed.mp4";
+import heroPoster from "@/assets/pj/hero-poster.jpg";
 import { MagicalEyesEffect } from "@/components/ui/text-effect";
 import { GlowCard } from "@/components/ui/spotlight-card";
 import { RevealCardContainer } from "@/components/ui/animated-profile-card";
@@ -47,8 +48,15 @@ export default function CreativeHero() {
       className="relative min-h-screen w-full bg-[#020202] flex flex-col selection:bg-white selection:text-black overflow-hidden"
     >
       {/* ── Background video ── */}
+      <img
+        src={heroPoster}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      />
       <video
         src={heroVideo}
+        poster={heroPoster}
         autoPlay
         muted
         loop
