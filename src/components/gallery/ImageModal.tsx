@@ -203,26 +203,6 @@ export default function ImageModal({
           </svg>
         </button>
 
-        {/* Bottom row — dots indicator centred between the prev/next horizontal lines */}
-        <div className="fixed inset-x-0 bottom-24 md:bottom-28 z-40 hidden md:flex items-center justify-center gap-2 pointer-events-none">
-          <div className="flex items-center gap-3 md:gap-4 pointer-events-auto">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => goTo(i)}
-                aria-label={`Go to frame ${i + 1}`}
-                className={cn(
-                  "rounded-full transition-all duration-300 cursor-pointer",
-                  i === index
-                    ? "w-2 h-2 bg-green-400"
-                    : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
-                )}
-              />
-            ))}
-          </div>
-        </div>
-
         {/* Bottom bar — copyright (left) · TWEET | SHARE (centre) · counter (right) */}
         <div className="fixed bottom-6 inset-x-0 z-40 px-6 md:px-10 flex items-end justify-between text-[10px] md:text-[11px] tracking-[0.3em] uppercase pointer-events-none">
           <p className="text-white/55 pointer-events-auto">

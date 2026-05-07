@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { TextScramble } from "@/components/ui/text-scramble";
 import { cn } from "@/lib/utils";
 
@@ -26,20 +26,31 @@ const SERVICES = [
   "CONCEPT",
 ];
 
-function useStars(count = 80) {
-  return useMemo(
-    () =>
-      Array.from({ length: count }, (_, i) => ({
-        id: i,
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        size: Math.random() * 1.5 + 0.5,
-        opacity: Math.random() * 0.6 + 0.2,
-        twinkle: Math.random() * 4 + 2,
-        delay: Math.random() * 4,
-      })),
-    [count]
+interface Star {
+  id: number;
+  top: number;
+  left: number;
+  size: number;
+  opacity: number;
+  twinkle: number;
+  delay: number;
+}
+
+function useStars(count = 80): Star[] {
+  // Lazy initializer — runs once on mount; keeps Math.random() out of the
+  // render path so the react-hooks/purity rule doesn't complain.
+  const [stars] = useState<Star[]>(() =>
+    Array.from({ length: count }, (_, i) => ({
+      id: i,
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      size: Math.random() * 1.5 + 0.5,
+      opacity: Math.random() * 0.6 + 0.2,
+      twinkle: Math.random() * 4 + 2,
+      delay: Math.random() * 4,
+    }))
   );
+  return stars;
 }
 
 function useLocalTime() {

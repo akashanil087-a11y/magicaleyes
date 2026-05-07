@@ -180,15 +180,50 @@ export default function Portfolio() {
 
       {/* ====== Mobile: simple vertical stack ====== */}
       <div className="md:hidden pt-28 pb-32 px-4">
-        <div className="text-center mb-8">
-          <p className="text-[10px] tracking-[0.5em] text-amber-300/80 mb-2">
-            ARTWORK
-          </p>
-          <h2 className="text-3xl font-serif tracking-[0.2em] mb-4">
-            PHOTOGRAPHY&nbsp;I
-          </h2>
-          <div className="w-8 h-px bg-amber-300/60 mx-auto" />
-        </div>
+        {/* Intro card — same faded portrait + meta as the desktop version */}
+        <article className="relative w-full mb-6 border border-green-400/15 bg-black/30 backdrop-blur-[2px] flex flex-col items-center justify-center text-center px-6 py-10 overflow-hidden">
+          <img
+            src={akashhhh}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-luminosity pointer-events-none"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-linear-to-b from-black/70 via-black/40 to-black/85 pointer-events-none"
+          />
+
+          <div className="relative z-10 flex flex-col items-center">
+            <p className="text-[10px] tracking-[0.5em] text-green-400/80 mb-3">
+              ARTWORK
+            </p>
+            <h2 className="text-3xl font-serif tracking-[0.2em] mb-4">
+              PHOTOGRAPHY&nbsp;I
+            </h2>
+            <div className="w-8 h-px bg-green-400/60 mb-6" />
+            <div className="space-y-5">
+              <div>
+                <p className="text-[9px] tracking-[0.5em] text-white/50 mb-1">
+                  PHOTOGRAPHER
+                </p>
+                <p className="text-[12px] tracking-[0.3em]">AKASH ANIL</p>
+              </div>
+              <div>
+                <p className="text-[9px] tracking-[0.5em] text-white/50 mb-1">
+                  STUDIO
+                </p>
+                <p className="text-[12px] tracking-[0.3em]">MAGICAL EYES</p>
+              </div>
+              <div>
+                <p className="text-[9px] tracking-[0.5em] text-white/50 mb-1">
+                  YEAR
+                </p>
+                <p className="text-[12px] tracking-[0.3em]">{year}</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
         <div className="space-y-3">
           {galleryImages.map((src, i) => (
             <button
@@ -220,7 +255,7 @@ export default function Portfolio() {
             type="button"
             onClick={() => scrollByPage("prev")}
             aria-label="Previous"
-            className="text-amber-200/70 hover:text-amber-200 transition-colors text-lg cursor-pointer"
+            className="text-green-400/70 hover:text-green-400 transition-colors text-lg cursor-pointer"
           >
             &lt;
           </button>
@@ -228,7 +263,7 @@ export default function Portfolio() {
             type="button"
             onClick={() => scrollByPage("next")}
             aria-label="Next"
-            className="text-amber-200/70 hover:text-amber-200 transition-colors text-lg cursor-pointer"
+            className="text-green-400/70 hover:text-green-400 transition-colors text-lg cursor-pointer"
           >
             &gt;
           </button>
