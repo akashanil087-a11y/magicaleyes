@@ -1,41 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+
+import { motion} from "framer-motion";
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import akkuImg from "@/assets/pj/akku.jpg";
 import magicalEyesLogo from "@/assets/magical-eyes.jpg";
 
 /* ─── CountUp helper ─────────────────────────────────────────── */
-interface CountUpProps {
-  to: number;
-  duration?: number;
-  suffix?: string;
-  className?: string;
-}
-function CountUp({ to, duration = 1.6, suffix = "+", className }: CountUpProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    let raf = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const t = Math.min((now - start) / (duration * 1000), 1);
-      const eased = 1 - Math.pow(1 - t, 3);
-      setCount(Math.round(to * eased));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, to, duration]);
-  return (
-    <span ref={ref} className={className}>
-      {count}
-      {suffix}
-    </span>
-  );
-}
 
 /* ─── Data ───────────────────────────────────────────────────── */
 const skills = ["FRONT-END ENGINEER","SOFTWARE TESTER", "UI/UX DESIGNER", "PHOTOGRAPHER"];

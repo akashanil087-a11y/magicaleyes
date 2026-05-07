@@ -118,7 +118,7 @@ export default function Portfolio() {
                   src={akashhhh}
                   alt=""
                   aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-luminosity pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover opacity-50o mix-blend-luminosity pointer-events-none"
                 />
                 <div
                   aria-hidden="true"

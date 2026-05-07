@@ -120,15 +120,17 @@ export default function LoadingScreen({
       </div>
 
       {/* ── Top-left: brand + coordinates ── */}
-      <div className="absolute top-6 left-6 md:top-8 md:left-8 text-[10px] md:text-[11px] tracking-[0.18em] text-white/70 flex flex-wrap gap-x-6 gap-y-1 max-w-[80vw]">
+      <div className="absolute top-6 left-6 md:top-8 md:left-8 text-[10px] md:text-[11px] tracking-[0.18em] text-white/70 flex flex-wrap gap-x-6 gap-y-1 max-w-[55vw] md:max-w-[80vw]">
         <span className="font-semibold">MAGICAL EYES</span>
-        <span>40° 42' 51.0036" N</span>
-        <span>74° 0' 21.5028" W</span>
+        <span className="hidden sm:inline">40° 42' 51.0036" N</span>
+        <span className="hidden sm:inline">74° 0' 21.5028" W</span>
       </div>
 
       {/* ── Top-right: live time ── */}
-      <div className="absolute top-6 right-6 md:top-8 md:right-8 text-[10px] md:text-[11px] tracking-[0.18em] text-white/70">
-        Local time: {time.full} ({time.pretty})
+      <div className="absolute top-6 right-6 md:top-8 md:right-8 text-[10px] md:text-[11px] tracking-[0.18em] text-white/70 max-w-[40vw] md:max-w-none truncate text-right">
+        <span className="hidden sm:inline">Local time: </span>
+        {time.full}
+        <span className="hidden sm:inline"> ({time.pretty})</span>
       </div>
 
       {/* ── Center: 3D rotating HUD + brand name below ── */}
