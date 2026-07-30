@@ -24,7 +24,12 @@ import Profile from "@/pages/Profile";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  // Block body on purpose — never `() => window.scrollTo(0, 0)`. Recent Chrome
+  // returns a Promise from scrollTo, and a concise arrow hands that Promise to
+  // React as the effect's cleanup, crashing the tree on the next unmount.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return null;
 }
 

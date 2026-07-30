@@ -28,6 +28,10 @@ import pj24 from "@/assets/pj/pj24.jpg";
 import pj28 from "@/assets/pj/pj28.jpg";
 import pj29 from "@/assets/pj/pj29.jpg";
 import pj31 from "@/assets/pj/pj31.jpg";
+import pj344 from "@/assets/pj/pj344.jpg";
+import pjk from "@/assets/pj/pjk.jpg";
+import pjm from "@/assets/pj/pjm.jpg";
+import pok from "@/assets/pj/pok.jpg";
 import akashhhh from "@/assets/pj/akashhhh.jpeg";
 
 const galleryImages: string[] = [
@@ -36,6 +40,7 @@ const galleryImages: string[] = [
   pj13, pj14, pj15, pj16, pj17, pj18,
   pj20, pj23, pj21,
   pj24, pj29 ,pj2,pj6 ,
+  pj344, pjk, pjm, pok,
 ];
 
 // Layout math for the horizontal-on-vertical scroll. The row contains
