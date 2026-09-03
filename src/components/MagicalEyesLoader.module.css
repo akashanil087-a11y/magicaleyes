@@ -1,0 +1,535 @@
+/*
+ * Magical Eyes entry screen.
+ *
+ * The wordmark is baked glyph geometry (wordmarkGeometry.ts), so no display
+ * face is loaded at runtime. The UI and ring-label faces still come from
+ * Google Fonts, loaded in index.html:
+ *   <link rel="stylesheet"
+ *     href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@700&family=Inter:wght@400;500;700&display=swap">
+ *
+ * Responsive model
+ * ----------------
+ * The plate is a 2.18:1 drawing, so on anything but a wide desktop the binding
+ * constraint is height, not width. Everything below sizes the artwork from
+ * BOTH axes (see --me-chrome) and then steps the hairline weight as the drawing
+ * shrinks, because stroke-width is in viewBox units and would otherwise scale
+ * away to nothing.
+ */
+
+.gate {
+  --me-bg: #171717;
+  --me-line: #f2f2f2;
+  --me-line-dim: #3a3a3a;
+  --me-muted: #8a8a8a;
+  /*
+   * Shutter release. --me-accent is the site green (Tailwind green-400, the
+   * same value Contact/Home/Footer use); the other two are its highlight and
+   * shadow, keeping the tonal spread the original red ramp had so the disc
+   * still reads as a lit physical button. --me-accent-rgb feeds the glows.
+   */
+  --me-accent: #4ade80;
+  --me-accent-lit: #70da97;
+  --me-accent-deep: #22c55e;
+  --me-accent-rgb: 74, 222, 128;
+  --me-stroke-w: 1.7;
+
+  /* Trace-space aspect of CAMERA_VIEW_BOX (1460 / 670). */
+  --me-aspect: 2.1791;
+  /* Vertical space the gate needs for everything that is not the artwork:
+     the controls, the flex gap and the padding. Tuned per breakpoint, and kept
+     a little above the real total so a font or button-metric shift cannot tip
+     the layout into overflow. */
+  --me-chrome: 205px;
+
+  /*
+   * Wordmark. The trace is the hairline that draws the letterforms on; the ink
+   * is the fill that arrives behind it. Nafiri's strokes are only ~2 units
+   * thick at this size, so the trace is deliberately dimmer than --me-line —
+   * outline and fill are too close in weight for the hand-off to read on
+   * colour alone.
+   */
+  --me-mark-trace: var(--me-muted);
+  --me-mark-ink: var(--me-line);
+  --me-mark-trace-w: 0.9;
+  /* When the fill arrives, measured from mount. Must match MARK_INK_DELAY_MS
+     in MagicalEyesLoader.tsx, which drives the trace's half of the hand-off. */
+  --me-mark-ink-delay: 3150ms;
+  --me-ui-font: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Condensed on purpose: the reference label spans ~136deg of the ring, a
+     width Inter cannot hit without shrinking the cap height. */
+  --me-label-font: "Archivo Narrow", "Roboto Condensed", "Arial Narrow", sans-serif;
+
+  --me-draw-dur: 760ms;
+  --me-draw-ease: cubic-bezier(0.33, 0.9, 0.36, 1);
+
+  position: fixed;
+  inset: 0;
+  /* dvh so the mobile URL bar cannot push the controls under the fold; the vh
+     line above is the fallback for browsers without dynamic viewport units. */
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Not centred: the plate claims the free space through its own auto margins
+     (see .camera). flex-start is also the safe fallback — if a viewport is ever
+     too short for the content, it overflows off the bottom rather than being
+     clipped at the top where the artwork is. */
+  justify-content: flex-start;
+  gap: clamp(14px, 3vh, 40px);
+  /* Deeper at the foot than the head: the controls are bottom-anchored, and
+     sitting them hard against the edge reads as an accident. */
+  padding:
+    max(16px, env(safe-area-inset-top))
+    max(14px, env(safe-area-inset-right))
+    max(clamp(20px, 4vh, 44px), calc(env(safe-area-inset-bottom) + 14px))
+    max(14px, env(safe-area-inset-left));
+  overflow: hidden;
+  background: var(--me-bg);
+  color: var(--me-line);
+  font-family: var(--me-ui-font);
+  -webkit-font-smoothing: antialiased;
+  transition: opacity 620ms ease, transform 620ms ease;
+}
+
+.gate[data-exiting] {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ canvas */
+
+.camera {
+  display: block;
+  /* Fit width, the 1500px design cap, AND the height left over after the
+     controls — whichever is smallest. Height is the binding term on phones,
+     tablets and short laptop windows, which is why it cannot be left out. */
+  width: min(100%, 1500px, calc((100vh - var(--me-chrome)) * var(--me-aspect)));
+  width: min(100%, 1500px, calc((100dvh - var(--me-chrome)) * var(--me-aspect)));
+  height: auto;
+  /*
+   * Anchors the controls to the bottom of the screen and centres the plate in
+   * the space left above them, so desktop and mobile read as one layout rather
+   * than a tight cluster on desktop and a floating one on phones. Auto margins
+   * absorb whatever height is spare, and collapse to 0 when there is none.
+   */
+  margin-block: auto;
+  overflow: visible;
+  /* Hidden until the dash lengths are measured, so the fully drawn artwork
+     never flashes on first paint. */
+  opacity: 0;
+}
+
+.camera[data-ready] {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------- line work */
+
+.stroke {
+  fill: none;
+  stroke: var(--me-line);
+  stroke-width: var(--me-stroke-w);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.camera[data-ready] .stroke {
+  animation: me-draw var(--me-draw-dur) var(--me-draw-ease) both;
+}
+
+@keyframes me-draw {
+  from {
+    stroke-dashoffset: var(--me-len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------------------------------------------------------------- wordmark */
+
+/*
+ * The engraving is drawn twice from the same paths. The trace is stroked and
+ * revealed with stroke-dashoffset, exactly like the plate hairlines; the ink
+ * then fades in underneath it. Both survive to the end, so the finished
+ * wordmark reads as a filled letterform with its outline still on it.
+ */
+.markTrace {
+  fill: none;
+  stroke: var(--me-mark-trace);
+  stroke-width: var(--me-mark-trace-w);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/*
+ * Two animations, two delays. The component sets animation-delay inline as a
+ * pair — per-glyph for the trace, shared for the settle — because one delay
+ * value would apply to both halves of this list.
+ */
+.camera[data-ready] .markTrace {
+  animation:
+    me-draw var(--me-draw-dur) var(--me-draw-ease) both,
+    me-trace-settle 700ms linear both;
+}
+
+.markInk {
+  fill: var(--me-mark-ink);
+  opacity: 0;
+}
+
+.camera[data-ready] .markInk {
+  animation: me-ink 800ms var(--me-draw-ease) var(--me-mark-ink-delay) both;
+}
+
+/* Lifts the hairline from its dim tracing colour to full strength as the ink
+   lands, so the outline and the fill finish as one mark. */
+@keyframes me-trace-settle {
+  from {
+    stroke: var(--me-mark-trace);
+  }
+  to {
+    stroke: var(--me-mark-ink);
+  }
+}
+
+@keyframes me-ink {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes me-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * The wordmark is engraved on the plate at every size, so the document heading
+ * exists only for assistive tech and search engines — never painted.
+ */
+.mark {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------- shutter release */
+
+.release {
+  cursor: pointer;
+}
+
+.release:focus {
+  outline: none;
+}
+
+.release[aria-disabled] {
+  cursor: default;
+}
+
+/* Stops live here rather than as attributes on the <stop> elements so the
+   accent is defined once. */
+.releaseStopLit {
+  stop-color: var(--me-accent-lit);
+}
+
+.releaseStopMid {
+  stop-color: var(--me-accent);
+}
+
+.releaseStopDeep {
+  stop-color: var(--me-accent-deep);
+}
+
+.releaseDisc {
+  fill: url(#me-release-grad);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.camera[data-ready] .releaseDisc {
+  animation:
+    me-release-in 500ms ease-out 1900ms both,
+    me-release-pulse 2600ms ease-in-out 2400ms infinite;
+}
+
+@keyframes me-release-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Measured from the reference: the disc fades almost out at the trough rather
+   than merely dimming, which is what makes the pulse read as a slow breath. */
+@keyframes me-release-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 7px rgba(var(--me-accent-rgb), 0.75));
+  }
+  50% {
+    opacity: 0.16;
+    filter: drop-shadow(0 0 0 rgba(var(--me-accent-rgb), 0));
+  }
+}
+
+.release:hover .releaseDisc,
+.release:focus-visible .releaseDisc {
+  animation-play-state: paused;
+  opacity: 1;
+  filter: drop-shadow(0 0 12px rgba(var(--me-accent-rgb), 0.9));
+}
+
+.release:active .releaseDisc {
+  transform: scale(0.92);
+}
+
+.releaseHit {
+  fill: transparent;
+}
+
+/* The label is static in the reference — it does not rotate. */
+.releaseLabel {
+  fill: var(--me-line);
+  font-family: var(--me-label-font);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  opacity: 0;
+}
+
+.camera[data-ready] .releaseLabel {
+  animation: me-rise 600ms var(--me-draw-ease) 1700ms both;
+}
+
+/* ---------------------------------------------------------------- controls */
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.6vh, 14px);
+  opacity: 0;
+  animation: me-rise 700ms var(--me-draw-ease) 260ms both;
+}
+
+.enter {
+  appearance: none;
+  min-height: 46px;
+  padding: 14px clamp(28px, 7vw, 42px);
+  border: 1px solid var(--me-line-dim);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--me-line);
+  font: inherit;
+  font-size: clamp(12.5px, 1.4vw + 9px, 14px);
+  font-weight: 500;
+  letter-spacing: 1.1px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 220ms ease, background-color 220ms ease;
+}
+
+.enter:hover:not(:disabled),
+.enter:focus-visible {
+  border-color: var(--me-line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.enter:focus-visible,
+.enterSilent:focus-visible {
+  outline: 2px solid var(--me-accent);
+  outline-offset: 3px;
+}
+
+.enterSilent {
+  appearance: none;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 0;
+  background: none;
+  color: var(--me-muted);
+  font: inherit;
+  font-size: 11.5px;
+  letter-spacing: 1.6px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 220ms ease;
+}
+
+.enterSilent:hover:not(:disabled),
+.enterSilent:focus-visible {
+  color: var(--me-line);
+}
+
+.enter:disabled,
+.enterSilent:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+/* ------------------------------------------------------------- breakpoints */
+
+/*
+ * Hairline weight. stroke-width lives in viewBox units, so a fixed value gets
+ * thinner on screen as the plate shrinks — 1.7 is a 0.45px ghost by the time
+ * the drawing is phone-width. Each step keeps the rendered stroke near 1px.
+ */
+@media (max-width: 1200px) {
+  .gate {
+    --me-stroke-w: 2.1;
+  }
+}
+
+@media (max-width: 900px) {
+  .gate {
+    --me-stroke-w: 2.7;
+  }
+}
+
+@media (max-width: 640px) {
+  .gate {
+    --me-stroke-w: 3.6;
+  }
+}
+
+@media (max-width: 420px) {
+  .gate {
+    --me-stroke-w: 4.6;
+  }
+}
+
+/* Short viewports — laptop windows, landscape phones — shrink the plate by
+   height instead. The min-width guards stop these from *lowering* a weight the
+   width steps above already raised. */
+@media (max-height: 620px) and (min-width: 901px) {
+  .gate {
+    --me-stroke-w: 2.7;
+  }
+}
+
+@media (max-height: 480px) and (min-width: 641px) {
+  .gate {
+    --me-stroke-w: 3.6;
+  }
+}
+
+@media (max-height: 380px) and (min-width: 421px) {
+  .gate {
+    --me-stroke-w: 4.6;
+  }
+}
+
+/* Ring label: 13 viewBox units is under 8px on screen once the plate is
+   narrower than ~900px. Drop it — the buttons below carry the same call to
+   action, and the pulsing disc stays as the affordance. */
+@media (max-width: 940px), (max-height: 560px) {
+  .releaseLabel {
+    display: none;
+  }
+}
+
+/*
+ * Phones and very short windows. With no heading stacked above the plate the
+ * gate only has to reserve room for the controls, so the artwork keeps more of
+ * the height than it did when a wordmark sat on top of it.
+ */
+@media (max-width: 560px), (max-height: 420px) {
+  .gate {
+    --me-chrome: 165px;
+    gap: clamp(10px, 2.4vh, 24px);
+  }
+}
+
+@media (max-width: 560px) {
+  .enter {
+    letter-spacing: 0.9px;
+  }
+}
+
+/* Landscape phones: almost all the height is gone, so trade the padding and
+   the gaps back to the artwork. */
+@media (max-height: 420px) {
+  .gate {
+    --me-chrome: 132px;
+    padding:
+      10px
+      max(12px, env(safe-area-inset-right))
+      max(16px, calc(env(safe-area-inset-bottom) + 10px))
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .enter {
+    min-height: 40px;
+    padding: 10px 26px;
+  }
+
+  .enterSilent {
+    min-height: 26px;
+    padding: 2px 8px;
+  }
+}
+
+/* --------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .camera,
+  .camera[data-ready] .stroke,
+  .camera[data-ready] .releaseLabel,
+  .controls {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  .camera[data-ready] .stroke {
+    stroke-dashoffset: 0 !important;
+  }
+
+  /* Nothing traces or inks in, so land the engraving at its finished state. */
+  .camera[data-ready] .markTrace,
+  .camera[data-ready] .markInk {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  .camera[data-ready] .markTrace {
+    stroke: var(--me-mark-ink);
+    stroke-dashoffset: 0 !important;
+  }
+
+  .camera[data-ready] .releaseDisc {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  .gate {
+    transition: opacity 200ms ease;
+  }
+
+  .gate[data-exiting] {
+    transform: none;
+  }
+}

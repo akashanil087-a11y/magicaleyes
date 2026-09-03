@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaFacebookF, FaTwitter } from "react-icons/fa";
+import { FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { INSTAGRAM, LINKEDIN } from "@/lib/socials";
 
 interface Props {
   open: boolean;
@@ -203,7 +204,7 @@ export default function ImageModal({
           </svg>
         </button>
 
-        {/* Bottom bar — copyright (left) · TWEET | SHARE (centre) · counter (right) */}
+        {/* Bottom bar — copyright (left) · our accounts (centre) · counter (right) */}
         <div className="fixed bottom-6 inset-x-0 z-40 px-6 md:px-10 flex items-end justify-between text-[10px] md:text-[11px] tracking-[0.3em] uppercase pointer-events-none">
           <p className="text-white/55 pointer-events-auto">
             {year} © Magical Eyes
@@ -211,23 +212,25 @@ export default function ImageModal({
 
           <div className="flex items-center gap-4 text-white/75 pointer-events-auto">
             <a
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`}
+              href={INSTAGRAM.href}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${INSTAGRAM.label} — opens in a new tab`}
               className="flex items-center gap-2 hover:text-white transition-colors"
             >
-              <FaTwitter className={ACCENT} />
-              Tweet
+              <FaInstagram className={ACCENT} />
+              {INSTAGRAM.label}
             </a>
             <span className="text-white/25">|</span>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+              href={LINKEDIN.href}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${LINKEDIN.label} — opens in a new tab`}
               className="flex items-center gap-2 hover:text-white transition-colors"
             >
-              <FaFacebookF className={ACCENT} />
-              Share
+              <FaLinkedinIn className={ACCENT} />
+              {LINKEDIN.label}
             </a>
           </div>
 

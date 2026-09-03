@@ -53,7 +53,13 @@ function CustomSlider({
   );
 }
 
-export default function MusicPlayer({ src }: { src: string }) {
+export default function MusicPlayer({
+  src,
+  autoPlay = false,
+}: {
+  src: string;
+  autoPlay?: boolean;
+}) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -84,6 +90,19 @@ export default function MusicPlayer({ src }: { src: string }) {
       audio.removeEventListener("ended", onEnded);
     };
   }, []);
+
+  // The entry gate hands us an already-unlocked audio context, so playback can
+  // start on mount. play() still rejects on browsers that disagree — swallow it
+  // and leave the player paused rather than crashing the tree.
+  useEffect(() => {
+    if (!autoPlay) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.play().then(
+      () => setIsPlaying(true),
+      () => setIsPlaying(false),
+    );
+  }, [autoPlay]);
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;

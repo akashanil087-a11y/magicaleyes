@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "@/hooks/useAuth";
-import LoadingScreen from "@/components/LoadingScreen";
+import MagicalEyesLoader from "@/components/MagicalEyesLoader";
 import ConnectionGate from "@/components/ConnectionGate";
 import { NotFoundPage } from "@/components/ui/404-page-not-found";
 
@@ -35,11 +35,22 @@ function ScrollToTop() {
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  // Set by the entry gate: the click that dismisses it is also the gesture that
+  // unlocks audio, so the player can start on mount instead of waiting for a
+  // second interaction.
+  const [withAudio, setWithAudio] = useState(false);
 
   if (loading) {
     return (
       <>
-        <LoadingScreen duration={5000} onComplete={() => setLoading(false)} />
+        <MagicalEyesLoader
+          markLead="M"
+          markRest="AGICAL EYES"
+          onEnter={(audio) => {
+            setWithAudio(audio);
+            setLoading(false);
+          }}
+        />
         {/* Hidden preloader — downloads the hero video in parallel with the
             loading screen so CreativeHero plays instantly when it mounts. */}
         <video
@@ -84,7 +95,7 @@ export default function App() {
                 </Routes>
               </main>
               <Footer />
-              <MusicPlayer src={bgMusic} />
+              <MusicPlayer src={bgMusic} autoPlay={withAudio} />
             </div>
           }
         />

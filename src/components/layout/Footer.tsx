@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { SOCIALS } from "@/lib/socials";
 
 // Routes that should render with no footer (full-bleed experiences).
 const HIDE_FOOTER_ROUTES = ["/portfolio"];
@@ -9,12 +10,6 @@ const menuLinks = [
   { to: "/portfolio", label: "Work" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
-];
-
-const socials = [
-  { label: "Instagram", href: "https://www.instagram.com/magical_eyes004/" },
-  { label: "WhatsApp", href: "https://wa.me/918943572124" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/akash-anil-136a01190/" },
 ];
 
 // Decorative bar widths matching the navbar style.
@@ -115,7 +110,7 @@ export default function Footer() {
                 Socials
               </p>
               <ul className="flex flex-col gap-2.5">
-                {socials.map((s) => (
+                {SOCIALS.map((s) => (
                   <li key={s.label}>
                     <a
                       href={s.href}
